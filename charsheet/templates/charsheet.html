@@ -1,0 +1,263 @@
+{% extends "home.html"%}
+{%block content%}
+<header>
+    <div class="row">
+        <div class="col-12">
+            <nav class="navbar navbar-light bg-light pb-3">
+                <a class="navbar-brand" href="#">Pathfinder 2 - Character Sheet</a>
+            </nav>
+        </div>
+    </div>
+</header>
+<section class="container-fluid mt-3">
+    <div class="row pb-2 pt-2 border bg-light">
+        <div class="col-12 col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <form action="#">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="cname">Character Name</label>
+                                    <input id="cname" name="cname" type="text" class="form-control"
+                                        placeholder="Character Name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="pname">Player Name</label>
+                                    <input id="pname" name="pname" type="text" class="form-control"
+                                        placeholder="Player Name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="exp">Experience Points</label>
+                                    <input id="exp" name="exp" type="number" class="form-control" min="0" value="0">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <form id="anchestryForm" action="{% url 'add_anchestry'%}" method="POST">
+                                    <div style="display:none">
+                                        <input type="hidden" value="{{ csrf_token }}" name="csrfmiddlewaretoken">
+                                    </div>
+                                    <label for="anchestry">Anchestries</label>
+                                    <select name="anchestry" id="anchestry" class="form-control">
+                                        <option value="none">Select</option>
+                                        {% for anchestry in anchestries %}
+                                        {% if sel_anchestry == anchestry.name %}
+                                        <option selected value="{{anchestry.id}}">
+
+                                            {{ anchestry.name }}
+
+                                        </option>
+                                        {% else %}
+                                        <option value="{{anchestry.id}}">
+
+                                            {{ anchestry.name }}
+
+                                        </option>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <form id="heritageForm" action="" method="POST">
+                                    <div style="display:none">
+                                        <input type="hidden" value="{{ csrf_token }}" name="csrfmiddlewaretoken">
+                                    </div>
+                                    <label for="heritage">Heritages</label>
+                                    {% if sel_anchestry %}
+                                    <select name="heritage" id="heritage" class="form-control">
+                                        <option value="">Select</option>
+                                        {% for heritage in heritages %}
+                                            {% if heritage.anchestry.name == sel_anchestry %}
+                                            <option selected value="{{heritage.id}}">
+                                                {{ heritage.name }}
+                                            </option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    {% else %}
+                                    <p id="heritage">Select Anchestry</p>
+                                    {% endif %}
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="background">Background</label>
+                                <select name="background" id="background" class="form-control">
+                                    <option value="">
+                                        Select
+                                    </option>
+                                    <option value="">
+                                        Acolyte
+                                    </option>
+                                    <option value="">
+                                        Acrobat
+                                    </option>
+                                    <option value="">
+                                        Animal Whisperer
+                                    </option>
+                                    <option value="">
+                                        Artisan
+                                    </option>
+                                    <option value="">
+                                        Artist
+                                    </option>
+                                    <option value="">
+                                        Barkeep
+                                    </option>
+                                    <option value="">
+                                        Barrister
+                                    </option>
+                                    <option value="">
+                                        Bounty-hunter
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="class">Class</label>
+                                <select name="class" id="class" class="form-control">
+                                    <option value="">Select</option>
+                                    <option value="">#</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="alignment">Alignment</label>
+                                <select name="alignment" id="alignment" class="form-control">
+                                    <option value="none">Select</option>
+                                    <option value="lg">Lawful Good</option>
+                                    <option value="ln">Lawful Neutral</option>
+                                    <option value="lm">Lawful Evil</option>
+                                    <option value="ng">Neutral Good</option>
+                                    <option value="tn">True Neutral</option>
+                                    <option value="ne">Neutral Evil</option>
+                                    <option value="cg">Chaotic Good</option>
+                                    <option value="cn">Chaotic Neutral</option>
+                                    <option value="ce">Chaotic Evil</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="size">Size</label>
+                                <ui id="size" class="list-group list-group-flush">
+                                    <li class="list-group-item">{{size}}</li>
+                                </ui>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="traits">Traits</label>
+                                {% if sel_anchestry%}
+                                <ui id="traits" class="list-group list-group-flush">
+                                    {% for trait in traits %}
+                                        {% if trait.anchestry.name == sel_anchestry %}
+                                            <li class="list-group-item">{{trait.name}}</li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ui>
+                                {% else %}
+                                <p id="traits">Select Anchestry</p>
+                                {%endif%}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-2">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="level">Level</label>
+                                <input id="level" name="level" type="number" class="form-control" min="1" max="20"
+                                    value="1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="level">Hero Points</label>
+                                <input id="level" name="level" type="number" class="form-control" min="0" value="0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3 bg-light">
+        <div class="col-6">
+            <h3 class="text-center mt-2">Abilities <span class="badge badge-light">{{free}}</span></h3>
+            <div class="row mt-2 text-center no-gutters border-top">
+                <div class="col-4">
+                    <h5>Name</h5>
+                </div>
+                <div class="col-4">
+                    <h5>Modifier</h5>
+                </div>
+                <div class="col-4">
+                    <h5>Score</h5>
+                </div>
+            </div>
+            {% for ability in abilities %}
+            <div class="row mt-1 text-center no-gutters">
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
+                            {{ ability.name }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
+                            {{ ability.modifier }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
+                            {{ ability.score }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-6"></div>
+    </div>
+</section>
+{%endblock%}

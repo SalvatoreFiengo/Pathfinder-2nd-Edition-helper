@@ -1,0 +1,63 @@
+{% extends "home.html" %}
+{% block content %}
+{% for anchestry in anchestries %}
+<section class="container-fluid">
+    <div class="row">
+        <div class="col text-center">
+            <h1>{{ anchestry.name }}</h1>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col">
+            <h3 class="text-center">Description</h3>
+            <p>{{ anchestry.description }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h4 class="card-title">Hit Points</h4>
+                    <p>{{ anchestry.hit_points }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h4 class="card-title">Size</h4>
+                    <p>{{ anchestry.size }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h4 class="card-title">Languages</h4>
+                    <p>{{ anchestry.languages }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col text-center">
+            <h3>Heritages</h3>
+        </div>
+    </div>
+    <div class="row">
+        {% for heritage in heritages %}
+            {% if heritage.anchestry.name == anchestry.name %}
+            <div class="col">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h4 class="card-title">{{heritage.name}}</h4>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}    
+        {% endfor %}
+    </div>
+</section>
+{% endfor %}
+{% endblock %}
